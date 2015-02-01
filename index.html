@@ -1,0 +1,147 @@
+<html>
+
+<head>
+    <style>
+        .changedHistory {
+            color: #f00;
+            font-weight: bold;
+        }
+        .ylabel {
+            display: block;
+            float: left;
+            width: 15%
+        }
+        .yspan {
+            display: block;
+            float: left;
+            width: 85%
+        }
+        .previous {
+            display: block;
+            float: left
+        }
+        .next {
+            display: block;
+            float: left
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <label class="ylabel">Operação:</label>
+        <span class="yspan" id="operacao"></span>
+    </div>
+    <div>
+        <label class="ylabel">Data da Operação:</label>
+        <span class="yspan" id="dataOperacao"></span>
+    </div>    
+    <div>
+        <label class="ylabel">Ação Fiscal:</label>
+        <span class="yspan" id="acaoFiscal"></span>
+    </div>
+    <div>
+        <label class="ylabel">Contribuinte:</label>
+        <span class="yspan" id="contribuinte"></span>
+    </div>
+    <div>
+        <label class="ylabel">Modalidade:</label>
+        <span class="yspan" id="modalidade"></span>
+    </div>
+    <div>
+        <label class="ylabel">motivo:</label>
+        <span class="yspan" id="motivo"></span>
+    </div>
+    <div>
+        <label class="ylabel">Orgão Executor:</label>
+        <span class="yspan" id="orgaoExecutor"></span>
+    </div>
+    <div>
+        <label class="ylabel">Valor Esperado:</label>
+        <span class="yspan" id="valorEsperado"></span>
+    </div>
+    <div>
+        <label class="ylabel">Duração da Ação:</label>
+        <span class="yspan" id="duracaoAcao"></span>
+    </div>
+    <div>
+        <button class="previous" onclick="previous();">Previous</button>
+        <button class="next" onclick="next();">Next</button>
+    </div>
+
+    <div id="testMe">TestMe</div>
+    
+    <script src="../yquery/yquery.js"></script>
+    <script src="../yhistory/yhistory.js"></script>
+    <script src="../yquery/api.js"></script>
+    
+    <script>
+
+        var y = $api("testMe").text("Ythalo Rossy S. Lira");
+        
+        console.log(y.inner());
+        
+        var dataSource = [
+            {
+                dataOperacao: '06/11/2014',
+                operacao: 'INSERIR',
+                acaoFiscal: '201400001',
+                contribuinte: 'Alkinda SOARES DE ARAUJO',
+                modalidade: 'AUDITORIA FISCAL PLENA',
+                motivo: 'AÇÃO FISCAL POR SOLICITAÇÃO INTERNA OU EXTERNA',
+                orgaoExecutor: 'NUCLEO SETORIAL DE COMBUSTIVEIS',
+                duracaoAcao: '180',
+                valorEsperado: '10000,00'
+            },
+            {
+                dataOperacao: '07/11/2014',
+                operacao: 'ATUALIZAR',
+                duracaoAcao: '150'
+            },
+            {
+                dataOperacao: '10/11/2014',
+                operacao: 'ATUALIZAR',
+                valorEsperado: '15000,00'
+            },
+            {
+                dataOperacao: '23/12/2014',
+                operacao: 'ATUALIZAR',
+                modalidade: 'AUDITORIA FISCAL PLENA',
+                motivo: 'AÇÃO FISCAL POR SOLICITAÇÃO INTERNA OU EXTERNA',
+                orgaoExecutor: 'OUTRO ORGÃO',
+                valorEsperado: '17500,00'
+            }            
+        ];
+
+        var historico = new History(dataSource);
+
+        function loadHistory(current) {
+        
+            for (var prop in current) {
+                
+                var elemento = $y.el("" + prop).removeClass("changedHistory");    
+                
+                if (current[prop].changed) {
+                    elemento.addClass("changedHistory");    
+                }
+                
+                elemento.text(current[prop].value).upper();
+            }
+        }
+
+        function previous() {
+            if (historico.hasPrevious())
+                loadHistory(historico.previous());
+        }
+
+        function next() {
+            if (historico.hasNext())
+                loadHistory(historico.next());
+        }
+
+        loadHistory(historico.current())
+    </script>
+</body>
+
+</html>

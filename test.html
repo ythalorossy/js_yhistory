@@ -1,0 +1,54 @@
+<html>
+
+<body>
+
+    <script>
+        function clone(obj) {
+            if (obj == null || typeof (obj) != 'object')
+                return obj;
+            var temp = new obj.constructor();
+            for (var key in obj)
+                temp[key] = clone(obj[key]);
+            return temp;
+        }
+
+        var um = {
+                a: 'testeUm',
+                b: 'testeUm',
+                umum: {
+                    a: 'testeUmUm',
+                    b: 'testeUmUm'
+                }
+            },
+            dois = {
+                a: 'testeDois'
+            };
+
+
+        var tres = clone(um);
+
+        console.info(tres);
+
+        var x = '101515.32';
+        if (isNaN(x)) {
+            console.info('nao numero');
+        } else {
+            console.info(new Number(x).toString());
+        }
+
+        var Test = function (id) {
+            this.id = id;
+            this.getId = function () {
+                return this.id
+            }
+        };
+
+        var t = new Test(111);
+
+        console.log(t.getId());
+    </script>
+
+
+</body>
+
+</html>
